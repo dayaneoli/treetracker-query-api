@@ -53,4 +53,30 @@ const errorHandler = (err, _req, res, _next) => {
   }
 };
 
-export { handlerWrapper, errorHandler };
+const queryFormatter = (req) => {
+  const { whereNulls, whereNotNulls, whereIns, organization_id, ...others } =
+    req.query;
+
+  // parse values before verifying
+  const query = {
+    whereNulls: whereNulls?.length ? JSON.parse(whereNulls) : [],
+    whereNotNulls: whereNotNulls?.length ? JSON.parse(whereNotNulls) : [],
+    whereIns: whereIns?.length ? JSON.parse(whereIns) : [],
+    ...others,
+  };
+  if (req.query.organization_id) {
+    query.organization_id = JSON.parse(req.query.organization_id);
+  }
+
+  if (req.query.captures_amount_min) {
+    query.captures_amount_min = parseInt(req.query.captures_amount_min);
+  }
+
+  if (req.query.captures_amount_max) {
+    query.captures_amount_max = parseInt(req.query.captures_amount_max);
+  }
+
+  return query;
+};
+
+export { handlerWrapper, errorHandler, queryFormatter };

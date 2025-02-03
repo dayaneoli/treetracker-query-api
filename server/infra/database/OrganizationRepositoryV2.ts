@@ -5,9 +5,9 @@ import BaseRepository from './BaseRepository';
 import patch, { PATCH_TYPE } from './patch';
 import Session from './Session';
 
-export default class OrganizationRepository extends BaseRepository<Organization> {
+export default class OrganizationRepositoryV2 extends BaseRepository<Organization> {
   constructor(session: Session) {
-    super('entity', session);
+    super('stakeholder.stakeholder', session);
   }
 
   async getByPlanter(planter_id: number, options: FilterOptions) {
@@ -32,18 +32,34 @@ export default class OrganizationRepository extends BaseRepository<Organization>
     return objectPatched;
   }
 
+  async getByGrower(grower_id: string, options: FilterOptions) {
+    const { limit, offset } = options;
+    const sql = `
+      SELECT
+      entity.*,
+      l.country_id, l.country_name, l.continent_id, l.continent_name
+      FROM entity
+      LEFT JOIN webmap.organization_location l ON l.id = entity.id
+      LEFT JOIN planter ON planter.organization_id = entity.id
+      WHERE planter.grower_account_uuid = '${grower_id}'
+      LIMIT ${limit}
+      OFFSET ${offset}
+    `;
+    const object = await this.session.getDB().raw(sql);
+    const objectPatched = await patch(
+      object.rows,
+      PATCH_TYPE.EXTRA_ORG,
+      this.session,
+    );
+    return objectPatched;
+  }
+
   async getById(id: string | number) {
     const object = await this.session
       .getDB()
-      .select(
-        this.session.getDB().raw(`
-          entity.*,
-          l.country_id, l.country_name, l.continent_id, l.continent_name
-          from entity 
-          left join webmap.organization_location l on l.id = entity.id
-        `),
-      )
-      .where('entity.id', id)
+      .select()
+      .from(this.tableName)
+      .where('id', id)
       .first();
 
     if (!object) {
@@ -56,6 +72,39 @@ export default class OrganizationRepository extends BaseRepository<Organization>
     );
     return objectPatched;
   }
+
+  async getByIds(ids: Array<string>, options: FilterOptions) {
+    const { limit = 20, offset = 0 } = options;
+
+    const result = await this.session
+      .getDB()
+      .select('*')
+      .from(this.tableName)
+      .whereIn('id', ids)
+      .offset(offset)
+      .limit(limit);
+
+    return result;
+  }
+
+  // async getByGrowerId(id: string | number) {
+  //   const object = await this.session
+  //     .getDB()
+  //     .select()
+  //     .from(this.tableName)
+  //     .where('grower_account_', id)
+  //     .first();
+
+  //   if (!object) {
+  //     throw new HttpError(404, `Can not find ${this.tableName} by id:${id}`);
+  //   }
+  //   const objectPatched = await patch(
+  //     object,
+  //     PATCH_TYPE.EXTRA_ORG,
+  //     this.session,
+  //   );
+  //   return objectPatched;
+  // }
 
   async getByMapName(mapName: string) {
     const object = await this.session
@@ -106,19 +155,5 @@ export default class OrganizationRepository extends BaseRepository<Organization>
       this.session,
     );
     return objectPatched;
-  }
-
-  async getByIds(ids: Array<number>, options: FilterOptions) {
-    const { limit, offset } = options;
-    const sql = `
-      SELECT
-        *
-      FROM entity
-      WHERE id IN (${ids})
-      LIMIT ${limit}
-      OFFSET ${offset}
-    `;
-    const object = await this.session.getDB().raw(sql);
-    return object.rows;
   }
 }

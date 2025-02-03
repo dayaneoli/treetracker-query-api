@@ -2,7 +2,7 @@ import express from 'express';
 import Joi from 'joi';
 import RawCaptureRepository from 'infra/database/RawCaptureRepository';
 import Session from 'infra/database/Session';
-import { handlerWrapper } from './utils';
+import { handlerWrapper, queryFormatter } from './utils';
 import RawCaptureModel from '../models/RawCapture';
 
 const router = express.Router();
@@ -10,30 +10,38 @@ const router = express.Router();
 router.get(
   '/count',
   handlerWrapper(async (req, res) => {
+    const query = queryFormatter(req);
+
+    // verify filter values
     Joi.assert(
-      req.query,
+      query,
       Joi.object().keys({
         limit: Joi.number().integer().min(1).max(1000),
         offset: Joi.number().integer().min(0),
         status: Joi.string().allow('unprocessed', 'approved', 'rejected'),
         bulk_pack_file_name: Joi.string(),
         grower_account_id: Joi.string().uuid(),
-        organization_id: Joi.string(),
+        grower_reference_id: Joi.number(),
+        organization_id: Joi.array().items(Joi.string().uuid()),
+        session_id: Joi.string().uuid(),
         startDate: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
         endDate: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
         id: Joi.string().uuid(),
         reference_id: Joi.string(),
         tree_id: Joi.string().uuid(),
         species_id: Joi.string().uuid(),
-        tag: Joi.string().uuid(),
+        tag_id: Joi.string().uuid(),
         device_identifier: Joi.string(),
         wallet: Joi.string(),
         tokenized: Joi.string(),
         sort: Joi.object(),
         token_id: Joi.string().uuid(),
+        whereNulls: Joi.array(),
+        whereNotNulls: Joi.array(),
+        whereIns: Joi.array(),
       }),
     );
-    const { ...rest } = req.query;
+    const { ...rest } = query;
 
     const repo = new RawCaptureRepository(new Session());
     const count = await RawCaptureModel.getCount(repo)({ ...rest });
@@ -59,27 +67,35 @@ router.get(
 router.get(
   '/',
   handlerWrapper(async (req, res) => {
+    const query = queryFormatter(req);
+
+    // verify filter values
     Joi.assert(
-      req.query,
+      query,
       Joi.object().keys({
         limit: Joi.number().integer().min(1).max(1000),
         offset: Joi.number().integer().min(0),
         status: Joi.string().allow('unprocessed', 'approved', 'rejected'),
         bulk_pack_file_name: Joi.string(),
         grower_account_id: Joi.string().uuid(),
-        organization_id: Joi.string(),
+        grower_reference_id: Joi.number(),
+        organization_id: Joi.array().items(Joi.string().uuid()),
+        session_id: Joi.string().uuid(),
         startDate: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
         endDate: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
         id: Joi.string().uuid(),
         reference_id: Joi.string(),
         tree_id: Joi.string().uuid(),
         species_id: Joi.string().uuid(),
-        tag: Joi.string().uuid(),
+        tag_id: Joi.string().uuid(),
         device_identifier: Joi.string(),
         wallet: Joi.string(),
         tokenized: Joi.string(),
         sort: Joi.object(),
         token_id: Joi.string().uuid(),
+        whereNulls: Joi.array(),
+        whereNotNulls: Joi.array(),
+        whereIns: Joi.array(),
       }),
     );
     const {
@@ -88,7 +104,7 @@ router.get(
       order = 'desc',
       order_by = 'captured_at',
       ...rest
-    } = req.query;
+    } = query;
 
     const repo = new RawCaptureRepository(new Session());
     const exe = RawCaptureModel.getByFilter(repo);

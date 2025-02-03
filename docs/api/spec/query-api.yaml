@@ -92,6 +92,12 @@ paths:
         - schema:
             type: string
           in: query
+          name: order_by
+        - schema:
+            type: string
+          in: query
+          name: area
+          description: Filter by geojson area
   /trees/featured:
     get:
       summary: get featured tree list
@@ -120,7 +126,7 @@ paths:
     parameters:
       - schema:
           type: string
-        name: id
+        name: captureId
         in: path
         required: true
     get:
@@ -176,12 +182,15 @@ paths:
           name: limit
           description: 'The limit length of the return list, if missing, default is 25'
         - schema:
-            type: string (uuid)
+            type: string
           in: query
           name: grower_account_id
           description: Filter by grower_account_id
         - schema:
-            type: array of integers or uuids
+            type: array
+            items:
+              type: string
+              format: uuid
           in: query
           name: organization_ids
           description: Filter by org id(s)
@@ -240,11 +249,85 @@ paths:
           in: query
           name: sort
           description: Sort by order and order_by values
+  /v2/grower_accounts/{grower_account_id}:
+    parameters:
+      - schema:
+          type: string
+        name: grower_account_id
+        in: path
+        required: true
+    get:
+      summary: get grower account info
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/grower_account'
+  /v2/trees/{tree_id}:
+    parameters:
+      - schema:
+          type: string
+        name: tree_id
+        in: path
+        required: true
+    get:
+      summary: get tree
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tree'
+  /v2/trees/{tree_id}/captures:
+    parameters:
+      - schema:
+          type: string
+        name: tree_id
+        in: path
+        required: true
+    get:
+      summary: get capture
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  captures:
+                    type: array
+                    description: the captures of a tree
+                    items:
+                      $ref: '#/components/schemas/capture'
+  /v2/stakeholder/{stakeholder_id}:
+    parameters:
+      - schema:
+          type: string
+        name: stakeholder_id
+        in: path
+        required: true
+    get:
+      summary: get stakeholder info
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stakeholder'
   '/raw_captures/{rawCaptureId}.':
     parameters:
       - schema:
           type: string
-        name: id
+        name: rawCaptureId
         in: path
         required: true
     get:
@@ -300,12 +383,15 @@ paths:
           name: limit
           description: 'The limit length of the return list, if missing, default is 25'
         - schema:
-            type: string (uuid)
+            type: string
           in: query
           name: grower_account_id
           description: Filter by grower_account_id
         - schema:
-            type: array of integers or uuids
+            type: array
+            items:
+              type: string
+              format: uuid
           in: query
           name: organization_ids
           description: Filter by org id(s)
@@ -481,7 +567,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/country'
-      operationId: get-countries-leader
+      operationId: get-country-by-id
       description: |-
         get country by id, in some case I use this to fetch the center point and move the map view to go to country
 
@@ -572,6 +658,8 @@ paths:
         - schema:
             type: string
           in: query
+          name: keyword
+          description: Filter by keyword
   '/organizations/{orgId}':
     parameters:
       - schema:
@@ -621,10 +709,13 @@ paths:
             type: integer
           in: query
           name: grower_account_id
-          description: Filter by planter id
+          description: Filter by grower_account_id
         - schema:
             type: string
           in: query
+          name: planter_id
+          description: Filter by planter id
+
       responses:
         '200':
           description: OK
@@ -736,6 +827,12 @@ paths:
           name: wallet_id
           description: Filter by wallet id
   '/tokens/{tokenId}':
+    parameters:
+      - schema:
+          type: string
+        name: tokenId
+        in: path
+        required: true
     get:
       summary: get token by id
       operationId: get-tokens-tokenId
@@ -798,6 +895,12 @@ paths:
           description: "if we need show a token list, it's usually we need display the tree linked to the token, and the planter info, and I think make this configurable might be better, so I add this switcher"
       description: ''
   '/wallets/{walletIdOrName}':
+    parameters:
+      - schema:
+          type: string
+        name: walletIdOrName
+        in: path
+        required: true
     get:
       summary: get wallet by id or name
       operationId: get-wallets-walletIdOrName
@@ -829,12 +932,12 @@ paths:
           name: zoomlevel
           description: the map zoomlevel
         - schema:
-            type: float
+            type: number
           in: query
           name: lat
           description: the latitude
         - schema:
-            type: float
+            type: number
           in: query
           name: lon
           description: the longitude
@@ -869,6 +972,7 @@ paths:
     get:
       responses:
         '200':
+          description: OK, Returns a list of trees associated with the specified planter ID, limited by the 'limit' parameter.
           content:
             application/json:
               examples:
@@ -884,6 +988,7 @@ paths:
     get:
       responses:
         '200':
+          description: OK, Returns a list of trees associated with the specified organization ID, limited by the 'limit' parameter.
           content:
             application/json:
               examples:
@@ -899,6 +1004,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information about a tree associated with the specified tree id
           content:
             application/json:
               examples:
@@ -908,6 +1014,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information about a tree associated with the specified tree id
           content:
             application/json:
               examples:
@@ -917,6 +1024,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information about a tree associated with the specified tree id
           content:
             application/json:
               example:
@@ -925,6 +1033,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information about a tree associated with the specified tree id
           content:
             application/json:
               example:
@@ -933,6 +1042,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information about a tree associated with the specified tree id
           content:
             application/json:
               example:
@@ -941,6 +1051,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information about a tree associated with the specified tree id
           content:
             application/json:
               example:
@@ -949,6 +1060,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns featured tree list
           content:
             application/json:
               examples:
@@ -963,6 +1075,7 @@ paths:
     get:
       responses:
         '200':
+          description: ''
           content:
             application/json:
               example:
@@ -971,6 +1084,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information of a country associated with the specified country id
           content:
             application/json:
               example:
@@ -979,6 +1093,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information of a country associated with the specified country id
           content:
             application/json:
               example:
@@ -987,6 +1102,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information of a country associated with the specified country id
           content:
             application/json:
               example:
@@ -995,6 +1111,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information of a country associated with the specified country id
           content:
             application/json:
               example:
@@ -1003,6 +1120,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information of a planter associated with the specified planter id
           content:
             application/json:
               examples:
@@ -1012,6 +1130,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information of a planter associated with the specified planter id
           content:
             application/json:
               example:
@@ -1020,6 +1139,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns a list of planters associated with a specific organization, limited by the specified count.
           content:
             application/json:
               examples:
@@ -1032,6 +1152,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns the organizations associated with a specified planter ID.
           content:
             application/json:
               examples:
@@ -1044,6 +1165,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns detailed information about a specific organization identified by its ID
           content:
             application/json:
               example:
@@ -1052,6 +1174,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns a list of species associated with a specific planter
           content:
             application/json:
               examples:
@@ -1065,6 +1188,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns a list of species associated with a specific organization_id
           content:
             application/json:
               examples:
@@ -1078,6 +1202,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns a list of transactions associated with a specific token ID
           content:
             application/json:
               examples:
@@ -1091,6 +1216,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns tokens associated with a specific wallet, optionally including related planter and capture details.
           content:
             application/json:
               examples:
@@ -1102,11 +1228,11 @@ paths:
                       - $ref: examples/tokens/2.json
                       - $ref: examples/tokens/3.json
                       - $ref: examples/tokens/4.json
-          description: ''
   /mock/tokens/1:
     get:
       responses:
         '200':
+          description: Returns tokens associated with a specific id
           content:
             application/json:
               example:
@@ -1115,6 +1241,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns tokens associated with a specific id
           content:
             application/json:
               example:
@@ -1123,6 +1250,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns tokens associated with a specific id
           content:
             application/json:
               example:
@@ -1131,6 +1259,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns tokens associated with a specific id
           content:
             application/json:
               example:
@@ -1139,6 +1268,7 @@ paths:
     get:
       responses:
         '200':
+          description: Returns tokens associated with a specific name
           content:
             application/json:
               example:
@@ -1150,14 +1280,14 @@ components:
       type: object
       properties:
         centroid:
-          type: GeoJSON
+          type: string
           description: The center of the location
         'type':
-          type: enum
-          description: The type of location
+          type: string
           enum:
             - tree
             - cluster
+          description: The type of location
         count:
           type: integer
           description: The number of trees in the location, just available for clusters
@@ -1167,45 +1297,56 @@ components:
       properties:
         bounds:
           type: array
+          items:
+            type: array
+            items:
+              type: number
+            minItems: 2
+            maxItems: 2
+          minItems: 2
+          maxItems: 2
           description: 2 points defining the bounding box
     tree:
-      description: a single tree object
+      description: A single tree object
       type: object
       x-examples: {}
       title: ''
       properties:
         id:
           type: number
-        photo_url:
-          type: string
-        verified:
-          type: boolean
-        token_id:
-          type: string
-        created_at:
+        latest_capture_id:
+          type: number
+        image_url:
           type: string
         lat:
           type: number
         lon:
           type: number
-        species_id:
-          type: number
-        planter_id:
-          type: number
+        estimated_geometric_location:
+          type: string
         gps_accuracy:
           type: number
-        capture_id:
-          type: string
-          description: "In the public.trees table, it's the uuid column"
-        capture_approval_tag:
-          type: string
-        domain_specific_data:
-          type: object
         morphology:
           type: string
-        rejection_reason:
-          type: string
         age:
+          type: number
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        estimated_geographic_location:
+          type: string
+        status:
+          type: string
+        attributes:
+          type: string
+        species_id:
+          type: number
+        species_name:
+          type: string
+        species_description:
+          type: string
+        country_name:
           type: string
     country:
       description: ''
@@ -1404,6 +1545,158 @@ components:
         photo_url:
           type: string
           description: it would be great if we can set a wallet avatar and show it on the wallet page
+    stakeholder:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: number
+        'type':
+          type: string
+        org_name:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        website:
+          type: string
+        logo_url:
+          type: string
+        map:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        active:
+          type: boolean
+        entity_id:
+          type: number
+    capture:
+      description: A tree photo capture and its associated data package, representing a tree at a given moment in time
+      type: object
+      properties:
+        id:
+          type: number
+        lat:
+          type: number
+        lon:
+          type: number
+        time_created:
+          type: string
+        image_url:
+          type: string
+        grower_id:
+          type: number
+        growing_organization_id:
+          type: number
+        token_id:
+          type: number
+        approved:
+          type: boolean
+        wallet_id:
+          type: number
+        wallet_name:
+          type: string
+    grower_account:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: number
+          format: uuid
+        wallet:
+          type: string
+        person_id:
+          type: number
+          format: uuid
+          nullable: true
+        organization_id:
+          type: number
+          format: uuid
+          nullable: true
+        first_name:
+          type: string
+        email:
+          type: string
+          format: email
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        image_url:
+          type: string
+        image_rotation:
+          type: number
+        status:
+          type: string
+        first_registration_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        last_name:
+          type: string
+          nullable: true
+        location:
+          type: string
+          description: 'The spatial location represented as geometry(Point,4326).'
+          nullable: true
+        lon:
+          type: number
+          nullable: true
+        lat:
+          type: number
+          nullable: true
+        bulk_pack_file_name:
+          type: string
+          nullable: true
+        gender:
+          type: string
+          nullable: true
+        about:
+          type: string
+          nullable: true
+        reference_id:
+          type: number
+          nullable: true
+        show_in_map:
+          type: boolean
+        links:
+          type: object
+          properties:
+            featured_trees:
+              type: string
+            associated_organizations:
+              type: string
+            species:
+              type: string
+    field_data:
+      description: ''
+      type: object
+      properties:
+        id:
+          type: number
+        lat:
+          type: number
+        lon:
+          type: number
+        created_at:
+          type: string
+        captured_at:
+          type: string
+        image_url:
+          type: string
+
   examples:
     tree933042:
       value:

@@ -40,6 +40,15 @@ export default class GrowerAccountRepository extends BaseRepository<GrowerAccoun
       delete filterObject.id;
     }
 
+    if (filterObject.reference_id) {
+      result.where(
+        `${this.tableName}.reference_id`,
+        '=',
+        filterObject.reference_id,
+      );
+      delete filterObject.reference_id;
+    }
+
     if (filterObject.first_name) {
       result.where(
         `${this.tableName}.first_name`,
@@ -90,25 +99,56 @@ export default class GrowerAccountRepository extends BaseRepository<GrowerAccoun
       delete filterObject.device_identifier;
     }
 
-    // how to get all the parent and children ids for the org -- if they exist?
-    // Stakeholder api? or pass the org ids from the frontend?
     if (filterObject.organization_id) {
-      result.where(`${this.tableName}.organization_id`, 'in', [
+      result.whereIn(
+        `${this.tableName}.organization_id`,
         filterObject.organization_id,
-      ]);
+      );
       delete filterObject.organization_id;
     }
 
-    // if we want to allow the client to pass more than one org id
+    // if 'captures_amount_max' === 0, 'captures_amount_min' can be only 0.
+    if (filterObject.captures_amount_max === 0) {
+      result.whereNull('c.captures_count');
+      delete filterObject.captures_amount_min;
+      delete filterObject.captures_amount_max;
+    }
 
-    // if (filterObject.organization_ids) {
-    //   result.where(
-    //     `${this.tableName}.planting_organization_id`,
-    //     'in',
-    //     filterObject.organization_ids.split(','),
-    //   );
-    //   delete filterObject.organization_ids;
-    // }
+    // if 'captures_amount_max' === 0 and 'captures_amount_max' is not defined, all results should be returned.
+    if (
+      filterObject.captures_amount_min === 0 &&
+      !filterObject.captures_amount_max
+    ) {
+      delete filterObject.captures_amount_min;
+      delete filterObject.captures_amount_max;
+    }
+
+    if (filterObject.captures_amount_min) {
+      result.where(
+        `c.captures_count`,
+        '>=',
+        `${filterObject.captures_amount_min}`,
+      );
+      delete filterObject.captures_amount_min;
+    }
+
+    if (filterObject.captures_amount_max) {
+      result.where(
+        `c.captures_count`,
+        '<=',
+        `${filterObject.captures_amount_max}`,
+      );
+      delete filterObject.captures_amount_max;
+    }
+
+    if (filterObject.wallet) {
+      result.where(
+        `${this.tableName}.wallet`,
+        'ilike',
+        `%${filterObject.wallet}%`,
+      );
+      delete filterObject.wallet;
+    }
 
     result.where(filterObject);
   }
@@ -129,6 +169,11 @@ export default class GrowerAccountRepository extends BaseRepository<GrowerAccoun
           ON s.id = ${this.tableName}.organization_id
         LEFT JOIN messaging.author AS author
           ON author.handle = ${this.tableName}.wallet
+        LEFT JOIN (
+          SELECT grower_account_id, COUNT(*) AS captures_count
+          FROM treetracker.capture
+          GROUP BY grower_account_id
+        ) c ON ${this.tableName}.id = c.grower_account_id
     `),
       )
       .where((builder) => this.filterWhereBuilder(filter, builder))
@@ -240,7 +285,8 @@ export default class GrowerAccountRepository extends BaseRepository<GrowerAccoun
         ${this.tableName}.*,
         s.org_name as organization,
         d.device_configurations as devices,
-        r.regions AS regions
+        r.regions AS regions,
+        COALESCE(c.captures_count, 0) AS captures
         FROM ${this.tableName}
         LEFT JOIN treetracker.capture AS tc
           ON ${this.tableName}.id = tc.grower_account_id
@@ -257,6 +303,11 @@ export default class GrowerAccountRepository extends BaseRepository<GrowerAccoun
           ON s.id = ${this.tableName}.organization_id
         LEFT JOIN messaging.author AS author
           ON author.handle = ${this.tableName}.wallet
+        LEFT JOIN (
+          SELECT grower_account_id, COUNT(*) AS captures_count
+          FROM treetracker.capture
+          GROUP BY grower_account_id
+        ) c ON ${this.tableName}.id = c.grower_account_id
         LEFT JOIN (
           SELECT tc.grower_account_id, ARRAY_AGG(row_to_json(dc.*)) AS device_configurations
           FROM treetracker.capture AS tc
@@ -308,5 +359,47 @@ export default class GrowerAccountRepository extends BaseRepository<GrowerAccoun
     `);
 
     return object.rows;
+  }
+
+  async getWalletsCount(filter: GrowerAccountFilter) {
+    const knex = this.session.getDB();
+    const result = await knex
+      .select(
+        knex.raw(`
+        COUNT(${this.tableName}.id) AS count
+        FROM ${this.tableName}
+    `),
+      )
+      .where((builder) => this.filterWhereBuilder(filter, builder))
+      .first();
+
+    return result;
+  }
+
+  async getWalletsByFilter(
+    filter: GrowerAccountFilter,
+    options: FilterOptions,
+  ) {
+    let promise = this.session
+      .getDB()
+      .select(
+        this.session.getDB().raw(`
+        ${this.tableName}.wallet
+        FROM ${this.tableName}
+    `),
+      )
+      .where((builder) => this.filterWhereBuilder(filter, builder))
+      .orderBy(`${this.tableName}.wallet`);
+
+    const { limit, offset } = options;
+    if (limit) {
+      promise = promise.limit(limit);
+    }
+    if (offset) {
+      promise = promise.offset(offset);
+    }
+
+    const wallets = await promise;
+    return wallets;
   }
 }

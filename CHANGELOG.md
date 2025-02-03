@@ -1,3 +1,252 @@
+## [1.74.1](https://github.com/Greenstand/treetracker-query-api/compare/v1.74.0...v1.74.1) (2025-02-03)
+
+### Bug Fixes
+
+- lint error ([b6be004](https://github.com/Greenstand/treetracker-query-api/commit/b6be00408626695ba568558599a1033038bcf49d))
+
+# [1.74.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.73.0...v1.74.0) (2024-10-10)
+
+### Bug Fixes
+
+- fixed YAML grammar errors ([1f5d28e](https://github.com/Greenstand/treetracker-query-api/commit/1f5d28ef60ea69237eeff4fb9059497913502fba))
+- update Node.js version to 20.8.1 for semantic-release ([53bae3a](https://github.com/Greenstand/treetracker-query-api/commit/53bae3ab1248041bedb21937f57516b719ce25fb))
+
+### Features
+
+- add Node v20 to pull request CI ([#381](https://github.com/Greenstand/treetracker-query-api/issues/381)) ([168d9e1](https://github.com/Greenstand/treetracker-query-api/commit/168d9e1f6d169c5d7471c81021c50a689268933d))
+- added /stakeholder/stakeholder_id endpoint ([9f2625b](https://github.com/Greenstand/treetracker-query-api/commit/9f2625b8b499bed3bd07c098829febcaa8435192))
+- update api documentation yaml (tree and capture response objects) ([0abe26f](https://github.com/Greenstand/treetracker-query-api/commit/0abe26ffd34d3c945a4b721d7b579c52cf310ea5))
+- update openapi documentation for grower_account endpoint ([e282e8f](https://github.com/Greenstand/treetracker-query-api/commit/e282e8f12ba4fd81cd88cefdd58f6dbdfa4a5892))
+
+# [1.73.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.72.0...v1.73.0) (2024-01-10)
+
+### Features
+
+- added session id filter for capture and raw capture ([96b67f8](https://github.com/Greenstand/treetracker-query-api/commit/96b67f86045bf8991eaad02a04765cabc7f65c02))
+- improve Joi validation for session_id on /v2/captures and /raw-captures ([c616f52](https://github.com/Greenstand/treetracker-query-api/commit/c616f5228a9ed9c046122191e199ae5e6d19f7e3))
+
+# [1.72.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.71.0...v1.72.0) (2023-11-14)
+
+### Features
+
+- add more detail to Joi validatin of organization ids ([7c1dabb](https://github.com/Greenstand/treetracker-query-api/commit/7c1dabb99a8832cbd24081fe2df77f6644f694ef))
+- add more detail to Joi validation of organization_id array ([5e1f29c](https://github.com/Greenstand/treetracker-query-api/commit/5e1f29c2b690acde16e329955d1666928a2e25f4))
+- fix merge errors ([f5516ed](https://github.com/Greenstand/treetracker-query-api/commit/f5516edfb819962ab23cbe1cf973c9b2092ddd42))
+
+# [1.71.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.70.7...v1.71.0) (2023-11-13)
+
+### Bug Fixes
+
+- contract ids to be type string ([43b4a69](https://github.com/Greenstand/treetracker-query-api/commit/43b4a69779897690a9390eaf0bbad167133de11e))
+- ids should be strings ([a54e2b9](https://github.com/Greenstand/treetracker-query-api/commit/a54e2b9da1bc6c20c692e1e23f581df5207b7781))
+
+### Features
+
+- add contract query ([95e3dea](https://github.com/Greenstand/treetracker-query-api/commit/95e3dea32f6b55fb3ce6374bd53536bea028893a))
+- add contract query ([3d59b8d](https://github.com/Greenstand/treetracker-query-api/commit/3d59b8da5be5723794fceabc95a00a9e3a269aff))
+- update contract query result format ([7f264ed](https://github.com/Greenstand/treetracker-query-api/commit/7f264edc8c2b16c7560e52bc7b34494e3c8872d9))
+- update contract query result format ([272ec97](https://github.com/Greenstand/treetracker-query-api/commit/272ec9740ed07b703646d9846f70bc4be3313af6))
+
+## [1.70.7](https://github.com/Greenstand/treetracker-query-api/compare/v1.70.6...v1.70.7) (2023-10-21)
+
+### Bug Fixes
+
+- added new type allowance for organization_id ([494e17b](https://github.com/Greenstand/treetracker-query-api/commit/494e17b8d694ee0489e96bf047e38164639a2e59))
+
+## [1.70.6](https://github.com/Greenstand/treetracker-query-api/compare/v1.70.5...v1.70.6) (2023-10-04)
+
+### Bug Fixes
+
+- queryFormatter ([6a33308](https://github.com/Greenstand/treetracker-query-api/commit/6a33308ed4adf7315066dbcbf272c933e0ca08d7))
+
+## [1.70.5](https://github.com/Greenstand/treetracker-query-api/compare/v1.70.4...v1.70.5) (2023-09-27)
+
+### Bug Fixes
+
+- species v2 ([7883430](https://github.com/Greenstand/treetracker-query-api/commit/788343072c25ae8a0d0936ffbbba3cea0b911128))
+
+## [1.70.4](https://github.com/Greenstand/treetracker-query-api/compare/v1.70.3...v1.70.4) (2023-09-16)
+
+### Bug Fixes
+
+- do not display inactive trees, and throw 404 error ([9bafbf6](https://github.com/Greenstand/treetracker-query-api/commit/9bafbf6f3b8691f56fd0a374912444394cfb0d2a))
+
+## [1.70.3](https://github.com/Greenstand/treetracker-query-api/compare/v1.70.2...v1.70.3) (2023-08-16)
+
+### Bug Fixes
+
+- species total bug ([70a64ab](https://github.com/Greenstand/treetracker-query-api/commit/70a64abd2995806fc50f3fa494d079d265a7323d))
+
+## [1.70.2](https://github.com/Greenstand/treetracker-query-api/compare/v1.70.1...v1.70.2) (2023-08-16)
+
+### Bug Fixes
+
+- bug with total by a commit ([32df39a](https://github.com/Greenstand/treetracker-query-api/commit/32df39a98cd8673d71602bbb8c4471c38ec53ba6))
+
+## [1.70.1](https://github.com/Greenstand/treetracker-query-api/compare/v1.70.0...v1.70.1) (2023-07-31)
+
+### Bug Fixes
+
+- trigger deployment ([4f6e363](https://github.com/Greenstand/treetracker-query-api/commit/4f6e363bc6419f3e4afcad368d289a80af1b07a2))
+
+# [1.70.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.69.2...v1.70.0) (2023-07-19)
+
+### Features
+
+- trees/uuid ([4ea7d2c](https://github.com/Greenstand/treetracker-query-api/commit/4ea7d2cd55a6565f72acc22ebba3f10d25275869))
+
+## [1.69.2](https://github.com/Greenstand/treetracker-query-api/compare/v1.69.1...v1.69.2) (2023-07-04)
+
+### Bug Fixes
+
+- minor update ([ffd264a](https://github.com/Greenstand/treetracker-query-api/commit/ffd264a0f78d003fb004eef6759ef53032b01994))
+- wallet about ([481707d](https://github.com/Greenstand/treetracker-query-api/commit/481707d0d434fc47b4acfecff9bb469b403ef453))
+
+## [1.69.1](https://github.com/Greenstand/treetracker-query-api/compare/v1.69.0...v1.69.1) (2023-06-15)
+
+### Bug Fixes
+
+- shows only acitve trees for GET /tokens ([7cdeb02](https://github.com/Greenstand/treetracker-query-api/commit/7cdeb02c4deaab7443119a5e3c5a28efed984864)), closes [#322](https://github.com/Greenstand/treetracker-query-api/issues/322)
+
+# [1.69.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.68.2...v1.69.0) (2023-06-04)
+
+### Features
+
+- neartest wallet case ([8e1182a](https://github.com/Greenstand/treetracker-query-api/commit/8e1182a96a7c6d766ddae8add2affd376dcbf7f7))
+
+## [1.68.2](https://github.com/Greenstand/treetracker-query-api/compare/v1.68.1...v1.68.2) (2023-06-03)
+
+### Bug Fixes
+
+- support wallet name, map name, format mistake ([b4cb0b6](https://github.com/Greenstand/treetracker-query-api/commit/b4cb0b62fbf9d69aff98585129dabe400b65f010))
+
+## [1.68.1](https://github.com/Greenstand/treetracker-query-api/compare/v1.68.0...v1.68.1) (2023-06-03)
+
+### Bug Fixes
+
+- bound is wrong to limit the neearest request ([b76abf3](https://github.com/Greenstand/treetracker-query-api/commit/b76abf35c4461d17260a1886f498c5f01ca5ad76))
+
+# [1.68.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.67.4...v1.68.0) (2023-06-02)
+
+### Features
+
+- git location nearest ([a6bec57](https://github.com/Greenstand/treetracker-query-api/commit/a6bec57ae092529068fd902e6d63d0b4851c3f11))
+
+## [1.67.4](https://github.com/Greenstand/treetracker-query-api/compare/v1.67.3...v1.67.4) (2023-05-27)
+
+### Bug Fixes
+
+- version trigger ([cc24027](https://github.com/Greenstand/treetracker-query-api/commit/cc24027f9ced7a3aee66f8bbf703cc21394206b9))
+
+## [1.67.3](https://github.com/Greenstand/treetracker-query-api/compare/v1.67.2...v1.67.3) (2023-05-27)
+
+### Bug Fixes
+
+- wrong planter count ([14dae92](https://github.com/Greenstand/treetracker-query-api/commit/14dae9219a6baf4504e596969cc9615583822bb9))
+- wrong tree count ([e7b4cab](https://github.com/Greenstand/treetracker-query-api/commit/e7b4cab29273beea9e7ed1f2dd74372f66e4c67e))
+
+## [1.67.2](https://github.com/Greenstand/treetracker-query-api/compare/v1.67.1...v1.67.2) (2023-05-20)
+
+### Bug Fixes
+
+- remove `v2` and let's the client to decide the version number ([bb8e730](https://github.com/Greenstand/treetracker-query-api/commit/bb8e730ceea2a09d7a2636605d859e8f053fcb31))
+
+## [1.67.1](https://github.com/Greenstand/treetracker-query-api/compare/v1.67.0...v1.67.1) (2023-05-04)
+
+### Bug Fixes
+
+- uuid capital problem ([fac9485](https://github.com/Greenstand/treetracker-query-api/commit/fac9485658f4b83af814d701ef32dd8ae4958dbd))
+
+# [1.67.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.66.0...v1.67.0) (2023-04-25)
+
+### Features
+
+- add grower_reference_id as a filter field for captures ([b6bea8c](https://github.com/Greenstand/treetracker-query-api/commit/b6bea8cd210a6869b312d95b119c2bbed65cdee8))
+- add grower_reference_id as a filter field for verify ([3a8b1cc](https://github.com/Greenstand/treetracker-query-api/commit/3a8b1ccdb9fc6d03e0b4126e022d77a6679286ef))
+- add reference_id as a valid field for growers query ([a92728a](https://github.com/Greenstand/treetracker-query-api/commit/a92728aa0d18ceee060aa60115edf30a45552a7f))
+
+# [1.66.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.65.0...v1.66.0) (2023-04-25)
+
+### Features
+
+- make results of captures query distinct to avoid duplicates ([7d99679](https://github.com/Greenstand/treetracker-query-api/commit/7d996798bfbf8cfd66678e12c4061c84709883f3))
+
+# [1.65.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.64.0...v1.65.0) (2023-03-29)
+
+### Bug Fixes
+
+- add 'total' to wallets api response ([61bf6ac](https://github.com/Greenstand/treetracker-query-api/commit/61bf6ac678191500d013940e9a6c697512e715d9))
+- remove distinct from select of wallets ([5118377](https://github.com/Greenstand/treetracker-query-api/commit/5118377137ea3477c032bfa6e9d5e4a279446dfc))
+- update return value type ([1609643](https://github.com/Greenstand/treetracker-query-api/commit/160964351daf20e5236cf40ad5bc0f02af20404d))
+
+### Features
+
+- add wallets api ([4601cce](https://github.com/Greenstand/treetracker-query-api/commit/4601cceb5a320ee0c02795dcb4f0b876a57c713e))
+- order filtered wallets by name and grower id ([bf1a980](https://github.com/Greenstand/treetracker-query-api/commit/bf1a98082ba1762132b67bb09873f5595f28e973))
+
+# [1.64.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.63.1...v1.64.0) (2023-03-26)
+
+### Features
+
+- filter growers by number of captures ([334c406](https://github.com/Greenstand/treetracker-query-api/commit/334c40690b91af049b56ce81fc660bb91a99601e))
+- fix merge errors ([ae2bb9e](https://github.com/Greenstand/treetracker-query-api/commit/ae2bb9e48b5cc335c8d4bcad904339d34744ae7a))
+
+## [1.63.1](https://github.com/Greenstand/treetracker-query-api/compare/v1.63.0...v1.63.1) (2023-03-20)
+
+### Bug Fixes
+
+- revert pages ([874e400](https://github.com/Greenstand/treetracker-query-api/commit/874e4008e03c4eb4d6bc999b420c531b5141e7fa))
+
+# [1.63.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.62.3...v1.63.0) (2023-03-20)
+
+### Bug Fixes
+
+- fixed order by time_created doesnt exist [@v2](https://github.com/v2) ([2854aa3](https://github.com/Greenstand/treetracker-query-api/commit/2854aa3949b5bf2f8c397cf43a968f3afc4d43d9))
+
+### Features
+
+- added v2/trees link for growers ([5a64db8](https://github.com/Greenstand/treetracker-query-api/commit/5a64db86e0183ab11bb2662cb3793c8ebff1486d))
+
+## [1.62.3](https://github.com/Greenstand/treetracker-query-api/compare/v1.62.2...v1.62.3) (2023-03-17)
+
+### Bug Fixes
+
+- [#291](https://github.com/Greenstand/treetracker-query-api/issues/291) tress order by default time_created ([13da656](https://github.com/Greenstand/treetracker-query-api/commit/13da65667ae40c16fef5154dd52f60aea9ff212e))
+
+## [1.62.2](https://github.com/Greenstand/treetracker-query-api/compare/v1.62.1...v1.62.2) (2023-03-16)
+
+### Bug Fixes
+
+- chaged the records limit to 100 ([4069d1e](https://github.com/Greenstand/treetracker-query-api/commit/4069d1e86b0e444896aab041dea20b2e639a9acc))
+
+## [1.62.1](https://github.com/Greenstand/treetracker-query-api/compare/v1.62.0...v1.62.1) (2023-02-14)
+
+### Bug Fixes
+
+- capture/raw-capture queries ([b804082](https://github.com/Greenstand/treetracker-query-api/commit/b804082cb09c53e92d85dbf3217dcf793533d27c))
+
+# [1.62.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.61.0...v1.62.0) (2023-02-09)
+
+### Features
+
+- added links to GET by grower id ([9fa7f69](https://github.com/Greenstand/treetracker-query-api/commit/9fa7f69549a59985495031d229b6545ce861b756))
+
+# [1.61.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.60.0...v1.61.0) (2023-02-07)
+
+### Features
+
+- added get v2/org and v2/org/id ([3a47cd0](https://github.com/Greenstand/treetracker-query-api/commit/3a47cd0acf158680165513d06c74e987b08305c9))
+- added links to grower router ([0c09e1d](https://github.com/Greenstand/treetracker-query-api/commit/0c09e1d337f28c87124a065091d8646948df6691))
+- added orgv2 router and files ([67d38ee](https://github.com/Greenstand/treetracker-query-api/commit/67d38ee29f1023b7d549cb29b9caa6e7d3590ac0))
+- added v2 to the rest of GETs ([1393277](https://github.com/Greenstand/treetracker-query-api/commit/139327719cb08ff75e304a74ceeb140eb603007c))
+
+# [1.60.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.59.0...v1.60.0) (2023-02-02)
+
+### Features
+
+- allow filtering by multiple orgs, tag_id, and allow null or not null queries ([2561b9b](https://github.com/Greenstand/treetracker-query-api/commit/2561b9b1b91dab84b925b41b6e916a171331a33d))
+- format incoming queries for validation and to make use of whereNull, whereNotNull arrays ([06b0116](https://github.com/Greenstand/treetracker-query-api/commit/06b0116a32cb2ad2a9cf0e1ccd45cb992b0b351d))
+
 # [1.59.0](https://github.com/Greenstand/treetracker-query-api/compare/v1.58.0...v1.59.0) (2023-01-06)
 
 ### Features
